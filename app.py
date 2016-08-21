@@ -84,21 +84,22 @@ def sync_to_disk():
     return utils.success_message()
 
 
+label = {0: 'negative', 1: 'positive', 2: 'neutral'}
+inverse_label = {'negative': 0, 'positive': 1, 'neutral': 2}
+classes = np.array([0, 1, 2])
+clf = joblib.load(os.path.join('pkl_objects', 'clf.pkl'))
+
+if app.debug is not True:
+    import logging
+    from logging.handlers import RotatingFileHandler
+
+    file_handler = RotatingFileHandler('app.log', maxBytes=1024 * 1024 * 10, backupCount=5)
+    file_handler.setLevel(logging.ERROR)
+    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    file_handler.setFormatter(formatter)
+    app.logger.addHandler(file_handler)
+
+
 if __name__ == '__main__':
-    label = {0: 'negative', 1: 'positive', 2: 'neutral'}
-    inverse_label = {'negative': 0, 'positive': 1, 'neutral': 2}
-    classes = np.array([0, 1, 2])
-    clf = joblib.load(os.path.join('pkl_objects', 'clf.pkl'))
-
-    if app.debug is not True:
-        import logging
-        from logging.handlers import RotatingFileHandler
-
-        file_handler = RotatingFileHandler('app.log', maxBytes=1024 * 1024 * 10, backupCount=5)
-        file_handler.setLevel(logging.ERROR)
-        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        file_handler.setFormatter(formatter)
-        app.logger.addHandler(file_handler)
-
     app.run()
 

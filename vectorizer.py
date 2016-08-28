@@ -4,8 +4,9 @@ import re
 import os
 
 
-cur_dir = os.path.dirname(__file__)
-stop = joblib.load(os.path.join('pkl_objects', 'stopwords.pkl'))
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+pkl_objects = os.path.join(PROJECT_ROOT, 'pkl_objects')
+stop = joblib.load(os.path.join(pkl_objects, 'stopwords.pkl'))
 
 
 def tokenizer(text):

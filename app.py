@@ -50,7 +50,11 @@ def train():
     text = json["text"]
     sentiment = json["sentiment"]
     if 'token' not in json or json['token'] != "qwertyuiop@Yolo":
-        abort(403)
+        response = jsonify({'message': 'You are not authorized for this request. '
+                                       'Training requests are temporarily protected behind authorization check '
+                                       'to prevent incorrect training of the model.'})
+        response.status_code = 403
+        return response
 
     db_utils.insert_into_db(get_db(), text, inverse_label[sentiment])
 

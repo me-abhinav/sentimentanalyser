@@ -55,6 +55,6 @@ def catch_exceptions(logger):
 
 def success_message():
     result = {
-        'message': 'message'
+        'message': 'success'
     }
     return jsonify(result)

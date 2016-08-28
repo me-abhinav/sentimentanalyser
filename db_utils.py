@@ -33,10 +33,10 @@ def clear_db(db):
     db.commit()
 
 
-def insert_into_db(db, text, prediction):
+def insert_into_db(db, text, sentiment):
     c = db.cursor()
     c.execute('INSERT INTO ' + db_table_name + ' (text, sentiment, date) VALUES (?, ?, Datetime("now"))',
-              (text, prediction))
+              (text, sentiment))
     db.commit()
 
 

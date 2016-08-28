@@ -26,13 +26,13 @@ clf = SGDClassifier(loss='log', random_state=1, n_iter=1)
 
 example0 = ["This app is bad"]
 example1 = ["This app is good"]
-example2 = ["This app is average"]
 
-classes = np.array([0, 1, 2])
+classes = np.array([0, 1])
+# 0 is negative
+# 1 is positive
 
 clf.partial_fit(vect.transform(example0), [0], classes=classes)
 clf.partial_fit(vect.transform(example1), [1], classes=classes)
-clf.partial_fit(vect.transform(example2), [2], classes=classes)
 
 dest = 'pkl_objects'
 if not os.path.exists(dest):

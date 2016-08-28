@@ -1,4 +1,4 @@
-from flask import g, jsonify, request
+from flask import abort, g, jsonify, render_template, request
 import os
 from sklearn.externals import joblib
 from vectorizer import vect
@@ -7,7 +7,6 @@ import utils
 import db_utils
 
 
-__all__ = ['make_json_app']
 app = utils.make_json_app(__name__)
 
 
@@ -26,10 +25,7 @@ def close_connection(exception):
 
 @app.route('/')
 def api_root():
-    result = {
-        'message': 'Abhinav Chauhan is awesome :)'
-    }
-    return jsonify(result)
+    return render_template('a.html')
 
 
 @app.route('/predict', methods=['POST'])
@@ -53,6 +49,8 @@ def train():
     json = request.get_json(force=True)
     text = json["text"]
     sentiment = json["sentiment"]
+    if 'token' not in json or json['token'] != "qwertyuiop@Yolo":
+        abort(403)
 
     db_utils.insert_into_db(get_db(), text, inverse_label[sentiment])
 
@@ -84,9 +82,9 @@ def sync_to_disk():
     return utils.success_message()
 
 
-label = {0: 'negative', 1: 'positive', 2: 'neutral'}
-inverse_label = {'negative': 0, 'positive': 1, 'neutral': 2}
-classes = np.array([0, 1, 2])
+label = {0: 'negative', 1: 'positive'}
+inverse_label = {'negative': 0, 'positive': 1}
+classes = np.array([0, 1])
 clf = joblib.load(os.path.join('pkl_objects', 'clf.pkl'))
 
 if app.debug is not True:
